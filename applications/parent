@@ -1,0 +1,20 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: parent-app
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/CloudNat01/argocd-selfmanaged.git
+    targetRevision: HEAD
+    path: argocd-selfmanaged/applications
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: parent
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Validate=false
