@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: prom-application
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL:  https://github.com/CloudNat01/argocd-selfmanaged.git
+        revision: main 
+        directories:
+          - path: argocd-selfmanaged/prom
+  template:
+    metadata:
+      name: prom
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/CloudNat01/argocd-selfmanaged.git
+        targetRevision: main
+        path: '{{ path.basename }}'
+        helm:
+          releaseName: prom
+
+      destination: 
+        server: https://kubernetes.default.svc
+        namespace: gafana
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+        - Prune=true
+        - ApplyOutOfSyncOnly=true
+        - PrunePropagationPolicy=foregroun
+

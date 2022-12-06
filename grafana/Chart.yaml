@@ -1,0 +1,8 @@
+apiVersion: v2
+description: A helm chart for installing grafana
+name: Grafana
+version: "1.0.1"
+dependencies:
+  - name: grafana
+    repository: https://grafana.github.io/helm-charts
+    version: "6.43.4"
